@@ -1,4 +1,3 @@
 package com.codecool.tttbackend.controller.dto.request;
 
-public record MoveRequestDTO(String userName, int br, int bc, int sr, int sc) {
-}
+public record MoveRequestDTO(int br, int bc, int sr, int sc) {}

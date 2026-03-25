@@ -11,12 +11,16 @@ export default function OnlineGame({ config, onExit }) {
   const { play } = useAudio();
   const [boardEntering, setBoardEntering] = useState(false);
   const [playersEntering, setPlayersEntering] = useState(false);
-  const { subscribe, send } = useWebSocket();
+  const { connect, subscribe, send } = useWebSocket();
   const [loading, setLoading] = useState(true);
   const [myTurn, setMyTurn] = useState(true);
   const [pendingMove, setPendingMove] = useState(null); // optimistic move
   const { accessToken } = useAuth();
   const userName = localStorage.getItem("userName");
+
+  useEffect(() => {
+    connect();
+  }, [connect]);
 
   useEffect(() => {
     console.log("currentPlayer from server:", state?.currentPlayer);
@@ -185,7 +189,6 @@ export default function OnlineGame({ config, onExit }) {
     setPendingMove({ br, bc, sr, sc, char: state.currentPlayer?.character });
 
     send(`/app/${config.gameId}/move`, {
-      userName,
       br,
       bc,
       sr,

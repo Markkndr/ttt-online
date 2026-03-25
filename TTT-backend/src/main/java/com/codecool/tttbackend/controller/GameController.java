@@ -133,25 +133,34 @@ public class GameController {
 
    // STOMP message handler: use @Payload and void return type so STOMP message conversion is used correctly
    @MessageMapping("/{gameId}/move")
-   public void makeMove(@DestinationVariable int gameId, @Payload MoveRequestDTO moveRequestDTO) {
-      LOG.info("Incoming move request to game #{} payload: {}", gameId, moveRequestDTO);
-      GameStatusResponseDTO response = gameService.makeMove(gameId, new Move(gameService.getPlayer(gameId, moveRequestDTO.userName()), new Position(moveRequestDTO.br(), moveRequestDTO.bc()), new Position(moveRequestDTO.sr(), moveRequestDTO.sc())));
-
-      if (response == null) {
-         LOG.info("Move rejected by server for game #{} and player {}", gameId, moveRequestDTO.userName());
+   public void makeMove(@DestinationVariable int gameId,
+                        @Payload MoveRequestDTO moveRequestDTO,
+                        Principal principal) {
+      if (principal == null || principal.getName() == null || principal.getName().isBlank()) {
+         LOG.warn("Rejected move for game #{} because principal was missing", gameId);
          return;
       }
-      LOG.info("About to send update to /topic/games/{} : {}", gameId, response);
+
+      String userName = principal.getName();
+
+      LOG.info("Incoming move request to game #{} from user {}", gameId, userName);
+
+      GameStatusResponseDTO response = gameService.makeMove(
+              gameId,
+              new Move(
+                      gameService.getPlayer(gameId, userName),
+                      new Position(moveRequestDTO.br(), moveRequestDTO.bc()),
+                      new Position(moveRequestDTO.sr(), moveRequestDTO.sc())
+              )
+      );
+
+      if (response == null) {
+         LOG.info("Move rejected by server for game #{} and player {}", gameId, userName);
+         return;
+      }
+
       messagingTemplate.convertAndSend("/topic/games/" + gameId, response);
       LOG.info("Move made! (sent)");
-   }
-
-   // Temporary test endpoint to broadcast the current game status to subscribed clients
-   @GetMapping("/{gameId}/test-broadcast")
-   public ResponseEntity<Void> testBroadcast(@PathVariable int gameId) {
-      messagingTemplate.convertAndSend("/topic/games/" + gameId, gameService.getGameStatus(gameId));
-      LOG.info("Test broadcast sent for game {}", gameId);
-      return ResponseEntity.ok().build();
    }
 
    @PatchMapping("/{gameId}/win")
