@@ -30,17 +30,28 @@ public class WebSocketAuthConfig implements WebSocketMessageBrokerConfigurer {
         registration.interceptors(new ChannelInterceptor() {
             @Override
             public Message<?> preSend(Message<?> message, MessageChannel channel) {
+
                 StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
 
                 if (StompCommand.CONNECT.equals(accessor.getCommand())) {
-                    String authHeader = accessor.getFirstNativeHeader("Authorization");
+
+                    String authHeader =
+                            accessor.getFirstNativeHeader("Authorization");
+
+                    // >>> DEBUG LINE <<<
+                    System.out.println("WS CONNECT auth header = " + authHeader);
 
                     if (authHeader != null && authHeader.startsWith("Bearer ")) {
+
                         String token = authHeader.substring(7);
 
                         if (jwtUtil.validateToken(token, false)) {
-                            String username = jwtUtil.getUsernameFromToken(token, false);
-                            String rolesString = jwtUtil.getRolesFromToken(token);
+
+                            String username =
+                                    jwtUtil.getUsernameFromToken(token, false);
+
+                            String rolesString =
+                                    jwtUtil.getRolesFromToken(token);
 
                             List<SimpleGrantedAuthority> authorities =
                                     Arrays.stream(rolesString.split(","))
@@ -51,9 +62,16 @@ public class WebSocketAuthConfig implements WebSocketMessageBrokerConfigurer {
                                             .collect(Collectors.toList());
 
                             var authentication =
-                                    new UsernamePasswordAuthenticationToken(username, null, authorities);
+                                    new UsernamePasswordAuthenticationToken(
+                                            username,
+                                            null,
+                                            authorities
+                                    );
 
                             accessor.setUser(authentication);
+
+                            // optional extra debug
+                            System.out.println("WS user set = " + username);
                         }
                     }
                 }
