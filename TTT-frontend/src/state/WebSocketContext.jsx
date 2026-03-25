@@ -10,50 +10,34 @@ export function WebSocketProvider({ children }) {
   const subsRef = useRef(new Map());
   const { accessToken } = useAuth();
 
-    const client = new Client({
-        webSocketFactory: () => new SockJS(import.meta.env.VITE_WS_URL),
-        reconnectDelay: 5000,
-        connectHeaders: accessToken
-            ? { Authorization: `Bearer ${accessToken}` }
-            : {},
-        onConnect: () => {
-            console.log("Connected to websocket");
+    const connect = useCallback(() => {
+        if (clientRef.current) return;
 
-            for (const [dest, { callback }] of subsRef.current.entries()) {
-                const sub = client.subscribe(dest, callback);
-                subsRef.current.set(dest, { callback, sub });
-            }
-        },
-        onStompError: (frame) => {
-            console.error("STOMP error", frame);
-        },
-    });
+        const client = new Client({
+            webSocketFactory: () => new SockJS(import.meta.env.VITE_WS_URL),
+            reconnectDelay: 5000,
+            connectHeaders: accessToken
+                ? { Authorization: `Bearer ${accessToken}` }
+                : {},
+            onConnect: () => {
+                console.log("Connected to websocket");
 
-  const connect = useCallback(() => {
-    if (clientRef.current) return;
+                for (const [dest, { callback }] of subsRef.current.entries()) {
+                    const sub = client.subscribe(dest, callback);
+                    subsRef.current.set(dest, { callback, sub });
+                }
+            },
+            onStompError: (frame) => {
+                console.error("STOMP error", frame);
+            },
+            onWebSocketError: (e) => {
+                console.error("WebSocket error", e);
+            },
+        });
 
-    const client = new Client({
-      webSocketFactory: () => new SockJS(import.meta.env.VITE_WS_URL),
-      reconnectDelay: 5000,
-      onConnect: () => {
-        console.log("Connected to websocket");
-
-        const token = accessToken;
-        const headers = token ? { Authorization: `Bearer ${token}` } : {};
-
-        for (const [dest, { callback }] of subsRef.current.entries()) {
-          const sub = client.subscribe(dest, callback, headers);
-          subsRef.current.set(dest, { callback, sub });
-        }
-      },
-      onStompError: (frame) => {
-        console.error("STOMP error", frame);
-      },
-    });
-
-    client.activate();
-    clientRef.current = client;
-  }, [accessToken]);
+        client.activate();
+        clientRef.current = client;
+    }, [accessToken]);
 
     const subscribe = useCallback((destination, callback) => {
         if (!clientRef.current) return null;
