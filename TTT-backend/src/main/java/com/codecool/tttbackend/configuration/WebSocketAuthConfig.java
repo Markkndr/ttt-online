@@ -1,0 +1,65 @@
+package com.codecool.tttbackend.configuration;
+
+import com.codecool.tttbackend.security.JwtUtil;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.simp.config.ChannelRegistration;
+import org.springframework.messaging.simp.stomp.StompCommand;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.messaging.support.ChannelInterceptor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Configuration
+public class WebSocketAuthConfig implements WebSocketMessageBrokerConfigurer {
+
+    private final JwtUtil jwtUtil;
+
+    public WebSocketAuthConfig(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
+    }
+
+    @Override
+    public void configureClientInboundChannel(ChannelRegistration registration) {
+        registration.interceptors(new ChannelInterceptor() {
+            @Override
+            public Message<?> preSend(Message<?> message, MessageChannel channel) {
+                StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
+
+                if (StompCommand.CONNECT.equals(accessor.getCommand())) {
+                    String authHeader = accessor.getFirstNativeHeader("Authorization");
+
+                    if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                        String token = authHeader.substring(7);
+
+                        if (jwtUtil.validateToken(token, false)) {
+                            String username = jwtUtil.getUsernameFromToken(token, false);
+                            String rolesString = jwtUtil.getRolesFromToken(token);
+
+                            List<SimpleGrantedAuthority> authorities =
+                                    Arrays.stream(rolesString.split(","))
+                                            .map(role -> role.replaceAll("[\\[\\]{}]", "").trim())
+                                            .filter(role -> !role.isEmpty())
+                                            .map(role -> role.startsWith("ROLE_") ? role : "ROLE_" + role)
+                                            .map(SimpleGrantedAuthority::new)
+                                            .collect(Collectors.toList());
+
+                            var authentication =
+                                    new UsernamePasswordAuthenticationToken(username, null, authorities);
+
+                            accessor.setUser(authentication);
+                        }
+                    }
+                }
+
+                return message;
+            }
+        });
+    }
+}
