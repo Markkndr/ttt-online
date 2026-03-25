@@ -6,27 +6,9 @@ import { useAuth } from "./AuthContext";
 const WebSocketContext = createContext(null);
 
 export function WebSocketProvider({ children }) {
-  const clientRef = useRef(null);
-  const subsRef = useRef(new Map());
-  const { accessToken } = useAuth();
-
-    const client = new Client({
-        webSocketFactory: () => new SockJS(import.meta.env.VITE_WS_URL),
-        reconnectDelay: 5000,
-        connectHeaders: accessToken
-            ? { Authorization: `Bearer ${accessToken}` }
-            : {},
-        onConnect: () => {
-            console.log("Connected to websocket");
-            for (const [dest, { callback }] of subsRef.current.entries()) {
-                const sub = client.subscribe(dest, callback);
-                subsRef.current.set(dest, { callback, sub });
-            }
-        },
-        onStompError: (frame) => {
-            console.error("STOMP error", frame);
-        },
-    });
+    const clientRef = useRef(null);
+    const subsRef = useRef(new Map());
+    const { accessToken } = useAuth();
 
     const connect = useCallback(() => {
         if (clientRef.current) return;
@@ -58,7 +40,7 @@ export function WebSocketProvider({ children }) {
     }, [accessToken]);
 
     const subscribe = useCallback((destination, callback) => {
-        if (!clientRef.current) return;
+        if (!clientRef.current) return null;
 
         const existing = subsRef.current.get(destination);
         if (existing) return existing.sub;
@@ -85,13 +67,25 @@ export function WebSocketProvider({ children }) {
         });
     }, []);
 
-  return (
-      <WebSocketContext.Provider value={{ connect, disconnect, subscribe, send }}>
-        {children}
-      </WebSocketContext.Provider>
-  );
+    const disconnect = useCallback(() => {
+        if (!clientRef.current) return;
+
+        for (const { sub } of subsRef.current.values()) {
+            if (sub) sub.unsubscribe();
+        }
+
+        subsRef.current.clear();
+        clientRef.current.deactivate();
+        clientRef.current = null;
+    }, []);
+
+    return (
+        <WebSocketContext.Provider value={{ connect, disconnect, subscribe, send }}>
+            {children}
+        </WebSocketContext.Provider>
+    );
 }
 
 export function useWebSocket() {
-  return useContext(WebSocketContext);
+    return useContext(WebSocketContext);
 }
