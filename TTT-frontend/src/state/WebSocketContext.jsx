@@ -10,6 +10,7 @@ export function WebSocketProvider({ children }) {
     const subsRef = useRef(new Map());
     const { accessToken } = useAuth();
 
+
     const connect = useCallback(() => {
         if (clientRef.current) return;
 
