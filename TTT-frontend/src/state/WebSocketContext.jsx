@@ -10,9 +10,10 @@ export function WebSocketProvider({ children }) {
     const subsRef = useRef(new Map());
     const { accessToken } = useAuth();
 
-
     const connect = useCallback(() => {
         if (clientRef.current) return;
+
+        console.log("WS token at connect =", accessToken);
 
         const client = new Client({
             webSocketFactory: () => new SockJS(import.meta.env.VITE_WS_URL),
