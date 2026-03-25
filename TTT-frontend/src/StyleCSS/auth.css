@@ -1,0 +1,87 @@
+/* ================= AUTH PAGE ================= */
+
+.auth-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.auth-view-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.auth-card {
+    background: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: var(--radius);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(188, 19, 254, 0.2);
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.auth-card .form-group {
+    width: 100%;
+}
+
+.helptext {
+    margin: 0 0 1.5rem 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.waiting{
+    position: fixed;
+    justify-self: center;
+    top: 15%
+}
+
+
+/* ================= FORM ================= */
+
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+.form-label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+    text-transform: uppercase;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px;
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: white;
+}
+
+/* ================= ACTION BUTTONS ================= */
+
+.auth-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 2rem;
+    width: 100%;
+}
+
+.auth-actions .base-btn {
+    display: inline-flex;
+    flex: 1;
+    min-width: 0;
+    font-size: 0.85rem;
+}

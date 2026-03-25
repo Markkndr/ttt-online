@@ -1,0 +1,379 @@
+/* ================= GAME BOARD LAYOUT ================= */
+
+.GB {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: min(80vmin, 80vw, 80vh);
+  aspect-ratio: 1 / 1; /* whole board is a square */
+  border-radius: 20px;
+  transition: all 600ms ease-in-out;
+}
+
+.BB {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  aspect-ratio: 1 / 1;
+  box-sizing: border-box;
+  border-radius: 0.1rem;
+  border-width: 0.1rem;
+  border-color: rgb(77, 17, 133);
+  border-style: dashed;
+  background-color: rgb(33, 1, 22);
+  justify-content: center;
+  align-items: center;
+  transition: all 600ms ease-in-out;
+  text-align: center;
+}
+
+.BB:hover {
+  border-width: 0.3rem;
+  background-color: rgb(41, 2, 27);
+  border-radius: 10px;
+  scale: 1.05;
+}
+
+.MB td {
+  padding: 0;
+}
+
+.SB {
+  box-sizing: border-box;
+  line-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  height: 90%;
+  aspect-ratio: 1 / 1;
+  box-sizing: border-box;
+  transform: translate(7%, 0%);
+  color: aquamarine;
+  text-align: center;
+  vertical-align: middle;
+  transition: all 200ms ease-in-out;
+  border-radius: 0.2rem;
+  font-size: 2rem;
+}
+
+.SB:hover {
+  border-width: 2px;
+  border-color: rgb(77, 17, 133);
+  background-color: rgb(54, 3, 36);
+  border-radius: 40%;
+}
+
+.activeBoard {
+  border-width: 2px;
+  background-color: rgb(143, 62, 116);
+  border-color: blueviolet;
+  border-radius: 10px;
+  scale: 1;
+}
+
+.activeBoard:hover {
+  border-color: rgb(101, 22, 175);
+  background-color: rgb(143, 62, 116);
+}
+
+.activeCell {
+  background-color: rgb(74, 21, 55);
+}
+
+.activeCell:hover {
+  background-color: rgb(189, 99, 156);
+}
+
+/* optimistic move highlight */
+.pendingCell {
+  color: gold;
+}
+
+/* only show pointer when the cell is actually clickable for current player */
+.clickableCell:hover {
+  cursor: pointer;
+}
+
+.wonBoard {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  color: aquamarine;
+  font-size: 100px;
+  scale: 0.9;
+  border-color: rgb(41, 8, 71);
+  border-radius: 20px;
+  background-color: rgb(33, 1, 22);
+  animation: winFadeIn 0.35s ease-out;
+}
+
+.drawBoard {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  scale: 0.9;
+  border-color: rgb(41, 8, 71);
+  border-radius: 20px;
+  background-color: rgb(33, 1, 22);
+  animation: winFadeIn 0.35s ease-out;
+}
+
+.drawBoard:hover {
+  scale: 1;
+  background-color: rgb(56, 2, 37);
+}
+
+/* ================= WIN / DRAW SCREEN ================= */
+
+.wonBigBoard,
+.drawBigBoard {
+  position: absolute; /* center in viewport */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 27rem;
+  background-color: rgb(33, 1, 22);
+  transition: 0.5s ease-in-out;
+  aspect-ratio: 1 / 1;
+  animation: winFadeInBig 0.4s ease-out;
+}
+
+/* keep your existing colors/fonts/hover from before, e.g.: */
+.wonBigBoard {
+  color: aquamarine;
+  font-size: 20rem;
+  border-radius: 10%;
+}
+
+.drawBigBoard {
+  color: rgb(235, 75, 12);
+  font-size: 100px;
+}
+
+.wonBigBoard:hover,
+.drawBigBoard:hover {
+  background-color: rgb(52, 2, 34);
+  cursor: pointer;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(1.1);
+}
+.wonBigBoard:hover {
+  color: rgb(10, 241, 68);
+}
+
+.drawBigBoard:hover {
+  color: rgb(37, 7, 167);
+}
+
+@keyframes winFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes winFadeInBig {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.winner {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  font-size: 7vh;
+  display: flex;
+  position: fixed;
+  bottom: 10%;
+  color: aquamarine;
+}
+
+.winner-name {
+  transition: all 600ms ease-in-out;
+}
+.winner-name:hover {
+  color: rgb(10, 241, 68);
+}
+
+.winner-score {
+  font-size: 1rem;
+}
+
+.fade-out {
+  opacity: 0;
+  scale: 0.5;
+}
+
+.game-title {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  display: grid;
+  display: flex;
+  position: fixed;
+  color: aquamarine;
+  font-size: 2rem;
+  top: 5%;
+}
+
+.game-name {
+  display: flex;
+  color: aquamarine;
+  font-size: 1.5rem;
+  justify-self: center;
+  margin-bottom: 1rem;
+}
+
+.start-game {
+  position: fixed;
+  justify-self: center;
+  bottom: 20%;
+}
+
+.player-list {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  position: fixed;
+  top: 30%;
+  justify-content: center;
+  align-items: center;
+  justify-self: center;
+}
+
+.waitingPlayer {
+  display: flex;
+  flex-direction: column;
+  color: aquamarine;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: rgb(33, 1, 22);
+  padding: 1.7rem;
+  border-radius: 30px;
+  width: 20vh;
+  aspect-ratio: 1/1.1;
+}
+
+.waitingPlayer-character {
+  font-size: 5rem;
+}
+.waitingPlayer-name {
+  font-size: 1.5rem;
+}
+
+/* ================= PLAYER INDICATORS ================= */
+
+.playerElement {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0, 5rem;
+  color: blueviolet;
+  position: fixed;
+  top: 4%;
+  transition: ease-in-out, 600ms;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transform-origin: center center;
+}
+
+.playerElement-character {
+  font-size: 1.5rem;
+}
+
+.activePlayer-character {
+  scale: 1.5;
+}
+
+.activePlayer {
+  transform: scale(1.1) translate(0%, -20%);
+  background-color: rgb(33, 1, 22);
+  border-color: blueviolet;
+  border-style: dotted;
+  border-width: 0.3rem;
+  color: aquamarine;
+  padding: 2rem;
+}
+
+.leftPlayer {
+  left: 20%;
+}
+.rightPlayer {
+  right: 20%;
+}
+
+/* ================= ANIMATIONS ================= */
+
+.outAbove {
+  top: -200%;
+}
+.outRight {
+  right: -100%;
+}
+.outLeft {
+  left: -100%;
+}
+.outBelow {
+  bottom: -100%;
+}
+
+/* ================= EXIT BUTTON ================= */
+
+.game-exit-button {
+  all: unset;
+  position: absolute;
+  cursor: pointer;
+  padding: 10px 25px;
+  bottom: 50px;
+  background-color: rgb(43, 8, 8);
+  border: 2px solid rgb(134, 15, 15);
+  color: white;
+  border-radius: 50px;
+  font-weight: bold;
+  text-align: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 10px rgba(134, 15, 15, 0.4);
+}
+
+.game-exit-button:hover {
+  background-color: rgb(134, 15, 15);
+  box-shadow: 0 0 20px rgba(134, 15, 15, 0.7);
+  transform: scale(1.05);
+}
