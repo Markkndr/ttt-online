@@ -10,17 +10,38 @@ export function WebSocketProvider({ children }) {
     const subsRef = useRef(new Map());
     const { accessToken } = useAuth();
 
-    const connect = useCallback(() => {
-        if (clientRef.current) return;
+    const disconnect = useCallback(() => {
+        if (!clientRef.current) return;
 
-        console.log("WS token at connect =", accessToken);
+        for (const { sub } of subsRef.current.values()) {
+            if (sub) sub.unsubscribe();
+        }
+
+        subsRef.current.clear();
+        clientRef.current.deactivate();
+        clientRef.current = null;
+    }, []);
+
+    const connect = useCallback((tokenOverride = null) => {
+        const token = tokenOverride || accessToken;
+
+        console.log("WS token at connect =", token);
+
+        if (!token) {
+            console.warn("Skipping WS connect because token is missing");
+            return;
+        }
+
+        if (clientRef.current) {
+            disconnect();
+        }
 
         const client = new Client({
             webSocketFactory: () => new SockJS(import.meta.env.VITE_WS_URL),
             reconnectDelay: 5000,
-            connectHeaders: accessToken
-                ? { Authorization: `Bearer ${accessToken}` }
-                : {},
+            connectHeaders: {
+                Authorization: `Bearer ${token}`,
+            },
             onConnect: () => {
                 console.log("Connected to websocket");
 
@@ -39,7 +60,7 @@ export function WebSocketProvider({ children }) {
 
         client.activate();
         clientRef.current = client;
-    }, [accessToken]);
+    }, [accessToken, disconnect]);
 
     const subscribe = useCallback((destination, callback) => {
         if (!clientRef.current) return null;
@@ -58,24 +79,15 @@ export function WebSocketProvider({ children }) {
     }, []);
 
     const send = useCallback((destination, body) => {
-        if (!clientRef.current || !clientRef.current.connected) return;
+        if (!clientRef.current || !clientRef.current.connected) {
+            console.warn("WS publish skipped, client not connected");
+            return;
+        }
 
         clientRef.current.publish({
             destination,
             body: JSON.stringify(body),
         });
-    }, []);
-
-    const disconnect = useCallback(() => {
-        if (!clientRef.current) return;
-
-        for (const { sub } of subsRef.current.values()) {
-            if (sub) sub.unsubscribe();
-        }
-
-        subsRef.current.clear();
-        clientRef.current.deactivate();
-        clientRef.current = null;
     }, []);
 
     return (

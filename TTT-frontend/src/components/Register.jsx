@@ -70,7 +70,7 @@ export default function Register({className = "", style, onBack, onSubmit}) {
                     localStorage.setItem("userName", data.username);
                     setAccessToken(jwt);
                     await refreshUser();
-                    connect();
+                    connect(jwt);
                 }
 
                 alert("Registration successful");

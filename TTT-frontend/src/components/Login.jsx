@@ -74,10 +74,10 @@ function Login({className = "", style, onSubmit, onRegister}) {
 
 
                 localStorage.setItem("userName", data.username);
-                setAccessToken(jwt);
 
+                setAccessToken(jwt);
                 await refreshUser();
-                connect();
+                connect(jwt);
 
                 // subscribe(`/user/${jwt}/notifications`, (msg) => {
                 //   const body = JSON.parse(msg.body);
