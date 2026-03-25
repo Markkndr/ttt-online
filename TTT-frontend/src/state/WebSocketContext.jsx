@@ -18,6 +18,7 @@ export function WebSocketProvider({ children }) {
             : {},
         onConnect: () => {
             console.log("Connected to websocket");
+
             for (const [dest, { callback }] of subsRef.current.entries()) {
                 const sub = client.subscribe(dest, callback);
                 subsRef.current.set(dest, { callback, sub });
@@ -54,8 +55,7 @@ export function WebSocketProvider({ children }) {
     clientRef.current = client;
   }, [accessToken]);
 
-  const subscribe = useCallback(
-      (destination, callback) => {
+    const subscribe = useCallback((destination, callback) => {
         if (!clientRef.current) return null;
 
         const existing = subsRef.current.get(destination);
@@ -64,18 +64,21 @@ export function WebSocketProvider({ children }) {
         const entry = { callback, sub: null };
         subsRef.current.set(destination, entry);
 
-        if (!clientRef.current.connected) {
-          return null;
-        }
+        if (!clientRef.current.connected) return null;
 
-        const token = accessToken;
-        const headers = token ? { Authorization: `Bearer ${token}` } : {};
-        const sub = clientRef.current.subscribe(destination, callback, headers);
+        const sub = clientRef.current.subscribe(destination, callback);
         subsRef.current.set(destination, { callback, sub });
         return sub;
-      },
-      [accessToken]
-  );
+    }, []);
+
+    const send = useCallback((destination, body) => {
+        if (!clientRef.current || !clientRef.current.connected) return;
+
+        clientRef.current.publish({
+            destination,
+            body: JSON.stringify(body),
+        });
+    }, []);
 
   const disconnect = useCallback(() => {
     if (!clientRef.current) return;
@@ -88,22 +91,6 @@ export function WebSocketProvider({ children }) {
     clientRef.current.deactivate();
     clientRef.current = null;
   }, []);
-
-  const send = useCallback(
-      (destination, body) => {
-        if (!clientRef.current || !clientRef.current.connected) return;
-
-        const token = accessToken;
-        const headers = token ? { Authorization: `Bearer ${token}` } : {};
-
-        clientRef.current.publish({
-          destination,
-          body: JSON.stringify(body),
-          headers,
-        });
-      },
-      [accessToken]
-  );
 
   return (
       <WebSocketContext.Provider value={{ connect, disconnect, subscribe, send }}>

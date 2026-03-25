@@ -141,6 +141,8 @@ public class GameController {
          return;
       }
 
+      LOG.info("WS principal = {}", principal);
+
       String userName = principal.getName();
 
       LOG.info("Incoming move request to game #{} from user {}", gameId, userName);
