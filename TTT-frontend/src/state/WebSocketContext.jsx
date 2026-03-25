@@ -6,9 +6,9 @@ import { useAuth } from "./AuthContext";
 const WebSocketContext = createContext(null);
 
 export function WebSocketProvider({ children }) {
-  const clientRef = useRef(null);
-  const subsRef = useRef(new Map());
-  const { accessToken } = useAuth();
+    const clientRef = useRef(null);
+    const subsRef = useRef(new Map());
+    const { accessToken } = useAuth();
 
     const connect = useCallback(() => {
         if (clientRef.current) return;
@@ -30,8 +30,8 @@ export function WebSocketProvider({ children }) {
             onStompError: (frame) => {
                 console.error("STOMP error", frame);
             },
-            onWebSocketError: (e) => {
-                console.error("WebSocket error", e);
+            onWebSocketError: (event) => {
+                console.error("WebSocket error", event);
             },
         });
 
@@ -64,25 +64,25 @@ export function WebSocketProvider({ children }) {
         });
     }, []);
 
-  const disconnect = useCallback(() => {
-    if (!clientRef.current) return;
+    const disconnect = useCallback(() => {
+        if (!clientRef.current) return;
 
-    for (const { sub } of subsRef.current.values()) {
-      if (sub) sub.unsubscribe();
-    }
-    subsRef.current.clear();
+        for (const { sub } of subsRef.current.values()) {
+            if (sub) sub.unsubscribe();
+        }
 
-    clientRef.current.deactivate();
-    clientRef.current = null;
-  }, []);
+        subsRef.current.clear();
+        clientRef.current.deactivate();
+        clientRef.current = null;
+    }, []);
 
-  return (
-      <WebSocketContext.Provider value={{ connect, disconnect, subscribe, send }}>
-        {children}
-      </WebSocketContext.Provider>
-  );
+    return (
+        <WebSocketContext.Provider value={{ connect, disconnect, subscribe, send }}>
+            {children}
+        </WebSocketContext.Provider>
+    );
 }
 
 export function useWebSocket() {
-  return useContext(WebSocketContext);
+    return useContext(WebSocketContext);
 }
