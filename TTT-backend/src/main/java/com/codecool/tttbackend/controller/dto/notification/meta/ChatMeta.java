@@ -2,5 +2,5 @@ package com.codecool.tttbackend.controller.dto.notification.meta;
 
 import com.codecool.tttbackend.controller.dto.response.UserInfoDTO;
 
-public record FriendRequestMeta(UserInfoDTO fromUserInfo) implements NotificationMeta {
+public record ChatMeta(UserInfoDTO fromUserInfo, String message) {
 }

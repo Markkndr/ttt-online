@@ -49,5 +49,3 @@ CREATE TABLE refresh_token
 );
 
 CREATE INDEX idx_refresh_token_hash ON refresh_token(token_hash);
-
-ALTER TABLE users ADD COLUMN profile_image TEXT;

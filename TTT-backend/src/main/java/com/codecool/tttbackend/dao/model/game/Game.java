@@ -3,11 +3,13 @@ package com.codecool.tttbackend.dao.model.game;
 import com.codecool.tttbackend.dao.model.User;
 import com.codecool.tttbackend.domain.game.board.BigBoard;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 @Entity
 @Table(name = "games")
 public class Game {
@@ -91,47 +93,6 @@ public class Game {
               .orElse(null);
    }
 
-
-   public Integer getId() {
-      return id;
-   }
-
-   public void setId(Integer id) {
-      this.id = id;
-   }
-
-   public LocalDateTime getTimeCreated() {
-      return timeCreated;
-   }
-
-   public void setTimeCreated(LocalDateTime timeCreated) {
-      this.timeCreated = timeCreated;
-   }
-
-   public User getCreator() {
-      return creator;
-   }
-
-   public void setCreator(User creator) {
-      this.creator = creator;
-   }
-
-   public String getName() {
-      return name;
-   }
-
-   public void setName(String name) {
-      this.name = name;
-   }
-
-   public GameState getGameState() {
-      return gameState;
-   }
-
-   public void setGameState(GameState gameState) {
-      this.gameState = gameState;
-   }
-
    // Return the Player object corresponding to the stored winner User (if any)
    public Player getWinner() {
       if (winner == null || players == null) return null;
@@ -139,23 +100,6 @@ public class Game {
               .filter(p -> p.getUser() != null && p.getUser().getId().equals(winner.getId()))
               .findFirst()
               .orElse(null);
-   }
-
-
-   public Integer getMaxPlayers() {
-      return maxPlayers;
-   }
-
-   public void setMaxPlayers(Integer maxPlayers) {
-      this.maxPlayers = maxPlayers;
-   }
-
-   public String getBoardState() {
-      return boardState;
-   }
-
-   public void setBoardState(String boardState) {
-      this.boardState = boardState;
    }
 
    // Return the Player object corresponding to the stored current-player User (if any)
@@ -172,18 +116,6 @@ public class Game {
       this.currentPlayer = (currentPlayer == null) ? null : currentPlayer.getUser();
    }
 
-   public String getActiveBoard() {
-      return activeBoard;
-   }
-
-   public void setActiveBoard(String activeBoard) {
-      this.activeBoard = activeBoard;
-   }
-
-   public List<Player> getPlayers() {
-      return players;
-   }
-
    public void setPlayers(List<Player> players) {
       this.players.clear();
       if (players != null) {
@@ -191,14 +123,6 @@ public class Game {
             addPlayer(player);
          }
       }
-   }
-
-   public BigBoard getBoard() {
-      return board;
-   }
-
-   public void setBoard(BigBoard board) {
-      this.board = board;
    }
 
    public void setWinner(Player winner) {

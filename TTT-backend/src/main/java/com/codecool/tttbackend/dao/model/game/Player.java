@@ -2,9 +2,11 @@ package com.codecool.tttbackend.dao.model.game;
 
 import com.codecool.tttbackend.dao.model.User;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.Objects;
 
+@Data
 @Entity
 @Table(name = "players")
 public class Player {
@@ -35,10 +37,6 @@ public class Player {
         return id;
     }
 
-    public void setId(PlayerId id) {
-        this.id = id;
-    }
-
     public Game getGame() {
         return game;
     }
@@ -67,16 +65,8 @@ public class Player {
         return character;
     }
 
-    public void setCharacter(Character character) {
-        this.character = character;
-    }
-
     public int getNumberOfWins() {
         return numberOfWins;
-    }
-
-    public void setNumberOfWins(int numberOfWins) {
-        this.numberOfWins = numberOfWins;
     }
 
     @Override
