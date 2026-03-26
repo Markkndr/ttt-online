@@ -30,7 +30,9 @@ public class User {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    @Column(name = "profile_image")
+    // ...existing code...
+    // map to PostgreSQL TEXT to allow values longer than 255 characters
+    @Column(name = "profile_image", columnDefinition = "text")
     private String profileImage;
 
     public User() {}

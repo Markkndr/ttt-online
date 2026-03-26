@@ -21,6 +21,6 @@ export default ({ mode }) => {
     },
     define: {
       global: "window",
-    }
+    },
   });
 };
