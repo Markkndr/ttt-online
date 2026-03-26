@@ -206,6 +206,6 @@ public class Game {
    }
 
    public List<String[]> getRotation() {
-      return players.stream().map(player -> new String[]{player.getUser().getUsername(), player.getCharacter().toString()}).toList();
+      return players.stream().map(player -> new String[]{player.getUser().getUsername(), player.getCharacter().toString(), player.getUser().getProfileImage()}).toList();
    }
 }

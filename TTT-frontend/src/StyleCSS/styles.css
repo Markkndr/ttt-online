@@ -1,379 +1,341 @@
-/* ================= GAME BOARD LAYOUT ================= */
 
 .GB {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  width: min(80vmin, 80vw, 80vh);
-  aspect-ratio: 1 / 1; /* whole board is a square */
-  border-radius: 20px;
-  transition: all 600ms ease-in-out;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 10px;
+    margin: auto;
+    border-collapse: collapse;
+    width: fit-content;
+    height: fit-content;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.6s ease-in-out;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(145deg, #0e2b3e, #3d8dba);
+
+}
+
+@media (max-width: 850px) {
+    main {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .GB {
+        position: relative;
+        top: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+        scale: 0.85;
+    }
+
+    .BB {
+        width: 100px !important;
+        height: 100px !important;
+        min-width: 100px !important;
+        min-height: 100px !important;
+    }
+
+    .SB {
+        width: 28px !important;
+        height: 28px !important;
+        min-width: 28px !important;
+        min-height: 28px !important;
+        line-height: 28px !important;
+        font-size: 1rem !important;
+    }
+
+    .wonBigBoard, .drawBigBoard {
+        width: 280px !important;
+        height: 280px !important;
+        font-size: 250px !important;
+        margin-top: 0 !important;
+
+    }
 }
 
 .BB {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  aspect-ratio: 1 / 1;
-  box-sizing: border-box;
-  border-radius: 0.1rem;
-  border-width: 0.1rem;
-  border-color: rgb(77, 17, 133);
-  border-style: dashed;
-  background-color: rgb(33, 1, 22);
-  justify-content: center;
-  align-items: center;
-  transition: all 600ms ease-in-out;
-  text-align: center;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 4px;
+    width: 150px;
+    height: 150px;
+    border-width: 3px;
+    border-radius: 15px;
+    border-color: rgba(122, 44, 44, 0);
+    border-style: dashed;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(145deg, #0e2b3e, #3d8dba);
+    transition: all 400ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    padding: 2px;
+    overflow: hidden;
+    position: relative;
 }
 
 .BB:hover {
-  border-width: 0.3rem;
-  background-color: rgb(41, 2, 27);
-  border-radius: 10px;
-  scale: 1.05;
+    border-width: 2px;
+    border-color: rgb(77, 17, 133);
+    background-color: rgb(54, 3, 36);
+    border-radius: 10px;
+    scale: 1.05;
 }
 
 .MB td {
-  padding: 0;
+    padding: 0;
 }
 
 .SB {
-  box-sizing: border-box;
-  line-height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 90%;
-  height: 90%;
-  aspect-ratio: 1 / 1;
-  box-sizing: border-box;
-  transform: translate(7%, 0%);
-  color: aquamarine;
-  text-align: center;
-  vertical-align: middle;
-  transition: all 200ms ease-in-out;
-  border-radius: 0.2rem;
-  font-size: 2rem;
+    width: 100%;
+    height: 100%;
+    color: aquamarine;
+    text-align: center;
+    align-items: center;
+    justify-items: center;
+    box-sizing: border-box;
+    vertical-align: middle;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: flex;
+    font-size: 1.2rem;
+    justify-content: center;
 }
 
 .SB:hover {
-  border-width: 2px;
-  border-color: rgb(77, 17, 133);
-  background-color: rgb(54, 3, 36);
-  border-radius: 40%;
+    border-width: 2px;
+    border-color: rgb(77, 17, 133);
+    background-color: rgb(54, 3, 36);
+    border-radius: 40%;
 }
 
 .activeBoard {
-  border-width: 2px;
-  background-color: rgb(143, 62, 116);
-  border-color: blueviolet;
-  border-radius: 10px;
-  scale: 1;
+    border-width: 2px;
+    background: linear-gradient(145deg, #e0c3fc, #8ec5fc);
+    border-radius: 10px;
+    scale: 1;
 }
 
 .activeBoard:hover {
-  border-color: rgb(101, 22, 175);
-  background-color: rgb(143, 62, 116);
+    border-color: rgb(101, 22, 175);
+    background: linear-gradient(145deg, #e0c3fc, #8ec5fc);
 }
 
 .activeCell {
-  background-color: rgb(74, 21, 55);
+    background: linear-gradient(145deg, #000000, #082032);
+    border-radius: 8px;
 }
 
 .activeCell:hover {
-  background-color: rgb(189, 99, 156);
-}
-
-/* optimistic move highlight */
-.pendingCell {
-  color: gold;
-}
-
-/* only show pointer when the cell is actually clickable for current player */
-.clickableCell:hover {
-  cursor: pointer;
+    background-color: rgb(181, 12, 31);
 }
 
 .wonBoard {
-  display: flex;
-  justify-content: center;
-  text-align: center;
-  align-items: center;
-  color: aquamarine;
-  font-size: 100px;
-  scale: 0.9;
-  border-color: rgb(41, 8, 71);
-  border-radius: 20px;
-  background-color: rgb(33, 1, 22);
-  animation: winFadeIn 0.35s ease-out;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    color: aquamarine;
+    font-size: 130px;
+    display: flex;
+    pointer-events: none;
+}
+@media (max-width: 850px) {
+    .wonBoard{
+        font-size: 80px;
+    }
 }
 
 .drawBoard {
-  display: flex;
-  justify-content: center;
-  text-align: center;
-  align-items: center;
-  scale: 0.9;
-  border-color: rgb(41, 8, 71);
-  border-radius: 20px;
-  background-color: rgb(33, 1, 22);
-  animation: winFadeIn 0.35s ease-out;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    scale: 0.9;
+    border-color: rgb(41, 8, 71);
+    border-radius: 20px;
+    background-color: rgb(33, 1, 22);
 }
 
 .drawBoard:hover {
-  scale: 1;
-  background-color: rgb(56, 2, 37);
+    scale: 1;
+    background-color: rgb(56, 2, 37);
 }
 
-/* ================= WIN / DRAW SCREEN ================= */
 
-.wonBigBoard,
-.drawBigBoard {
-  position: absolute; /* center in viewport */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  width: 27rem;
-  background-color: rgb(33, 1, 22);
-  transition: 0.5s ease-in-out;
-  aspect-ratio: 1 / 1;
-  animation: winFadeInBig 0.4s ease-out;
-}
-
-/* keep your existing colors/fonts/hover from before, e.g.: */
 .wonBigBoard {
-  color: aquamarine;
-  font-size: 20rem;
-  border-radius: 10%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    color: aquamarine;
+    width: 350px;
+    height: 350px;
+    background: linear-gradient(145deg, #bf9b30, #f7ef8a, #bf9b30, #aa7f1d);
+    font-size: 320px;
+    transition: 0.5s ease-in-out;
+    border-radius: 10%;
+    margin-top: 40vh;
+    padding-bottom: 40px;
+}
+
+.wonBigBoard:hover {
+    background-color: rgb(52, 2, 34);
+    scale: 1.1;
+    color: rgb(10, 241, 68);
+    cursor: pointer;
+    border-radius: 50%;
 }
 
 .drawBigBoard {
-  color: rgb(235, 75, 12);
-  font-size: 100px;
-}
-
-.wonBigBoard:hover,
-.drawBigBoard:hover {
-  background-color: rgb(52, 2, 34);
-  cursor: pointer;
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(1.1);
-}
-.wonBigBoard:hover {
-  color: rgb(10, 241, 68);
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    color: rgb(235, 75, 12);
+    font-size: 100px;
+    width: 450px;
+    height: 450px;
+    background-color: rgb(33, 1, 22);
+    transition: 0.5s ease-in-out;
 }
 
 .drawBigBoard:hover {
-  color: rgb(37, 7, 167);
-}
-
-@keyframes winFadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes winFadeInBig {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.7);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-}
-
-.winner {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  font-size: 7vh;
-  display: flex;
-  position: fixed;
-  bottom: 10%;
-  color: aquamarine;
-}
-
-.winner-name {
-  transition: all 600ms ease-in-out;
-}
-.winner-name:hover {
-  color: rgb(10, 241, 68);
-}
-
-.winner-score {
-  font-size: 1rem;
+    background-color: rgb(52, 2, 34);
+    scale: 1.1;
+    color: rgb(37, 7, 167);
+    cursor: pointer;
+    border-radius: 50%;
 }
 
 .fade-out {
-  opacity: 0;
-  scale: 0.5;
+    opacity: 0;
+    scale: 0.5;
 }
 
-.game-title {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  display: grid;
-  display: flex;
-  position: fixed;
-  color: aquamarine;
-  font-size: 2rem;
-  top: 5%;
-}
-
-.game-name {
-  display: flex;
-  color: aquamarine;
-  font-size: 1.5rem;
-  justify-self: center;
-  margin-bottom: 1rem;
-}
-
-.start-game {
-  position: fixed;
-  justify-self: center;
-  bottom: 20%;
-}
-
-.player-list {
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  position: fixed;
-  top: 30%;
-  justify-content: center;
-  align-items: center;
-  justify-self: center;
-}
-
-.waitingPlayer {
-  display: flex;
-  flex-direction: column;
-  color: aquamarine;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  background-color: rgb(33, 1, 22);
-  padding: 1.7rem;
-  border-radius: 30px;
-  width: 20vh;
-  aspect-ratio: 1/1.1;
-}
-
-.waitingPlayer-character {
-  font-size: 5rem;
-}
-.waitingPlayer-name {
-  font-size: 1.5rem;
-}
-
-/* ================= PLAYER INDICATORS ================= */
 
 .playerElement {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0, 5rem;
-  color: blueviolet;
-  position: fixed;
-  top: 4%;
-  transition: ease-in-out, 600ms;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  transform-origin: center center;
-}
+    display: flex;
+    flex-direction: column;
+    color: aquamarine;
+    position: fixed;
+    top: 4%;
+    transition: ease-in-out, 600ms;
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 
-.playerElement-character {
-  font-size: 1.5rem;
+    overflow: hidden;
+    background-color: #1a1a1a;
+    border: 2px solid rgba(127, 255, 212, 0.3);
 }
-
-.activePlayer-character {
-  scale: 1.5;
+.playerElement img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.playerElement span {
+    font-size: 1.5rem;
+    font-weight: bold;
+    z-index: 2;
 }
 
 .activePlayer {
-  transform: scale(1.1) translate(0%, -20%);
-  background-color: rgb(33, 1, 22);
-  border-color: blueviolet;
-  border-style: dotted;
-  border-width: 0.3rem;
-  color: aquamarine;
-  padding: 2rem;
+    scale: 1.4;
+    background-color: rgb(33, 1, 22);
+    border-color: blueviolet;
+    border-style: dotted;
+    border-width: 5px;
 }
 
-.leftPlayer {
-  left: 20%;
-}
-.rightPlayer {
-  right: 20%;
-}
+.leftPlayer { left: 30%; }
+.rightPlayer { right: 30%; }
 
-/* ================= ANIMATIONS ================= */
 
-.outAbove {
-  top: -200%;
-}
-.outRight {
-  right: -100%;
-}
-.outLeft {
-  left: -100%;
-}
-.outBelow {
-  bottom: -100%;
-}
+.outAbove { top: -200%; }
+.outRight { right: -100%; }
+.outLeft { left: -100%; }
+.outBelow { bottom: -100%; }
 
-/* ================= EXIT BUTTON ================= */
 
 .game-exit-button {
-  all: unset;
-  position: absolute;
-  cursor: pointer;
-  padding: 10px 25px;
-  bottom: 50px;
-  background-color: rgb(43, 8, 8);
-  border: 2px solid rgb(134, 15, 15);
-  color: white;
-  border-radius: 50px;
-  font-weight: bold;
-  text-align: center;
-  transition: all 0.2s ease;
-  box-shadow: 0 0 10px rgba(134, 15, 15, 0.4);
+    all: unset;
+    position: absolute;
+    cursor: pointer;
+    padding: 10px 25px;
+    bottom: 50px;
+    background-color: rgb(43, 8, 8);
+    border: 2px solid rgb(134, 15, 15);
+    color: white;
+    border-radius: 50px;
+    font-weight: bold;
+    text-align: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 0 10px rgba(134, 15, 15, 0.4);
+    right: 40%;
+    left: 40%;
+}
+
+@media (max-width: 800px) {
+    .game-exit-button {
+        right: 30%;
+        left: 30%;
+    }
 }
 
 .game-exit-button:hover {
-  background-color: rgb(134, 15, 15);
-  box-shadow: 0 0 20px rgba(134, 15, 15, 0.7);
-  transform: scale(1.05);
+    background-color: rgb(134, 15, 15);
+    box-shadow: 0 0 20px rgba(134, 15, 15, 0.7);
+    transform: scale(1.05);
+}
+
+.winner{
+    position: absolute;
+    font-family: 'Arial', sans-serif;
+    font-size: 2.5rem;
+    font-weight: bold;
+    top: 30vh;
+    text-align: center;
+
+    background: linear-gradient(145deg, #bf9b30, #f7ef8a, #bf9b30);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    filter: drop-shadow(0 0 10px rgba(191, 155, 48, 0.4));
+
+    animation: fadeInDown 0.8s ease-out;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.game-title{
+    position: absolute;
+    top: 15vh;
+    background-color: rgb(26, 138, 138);
+    border: 2px solid rgb(0, 0, 0);
+    color: #000000;
+    border-radius: 10px;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(134, 15, 15, 0.4);
+    padding: 5px;
+
 }

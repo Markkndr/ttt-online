@@ -215,41 +215,60 @@ export default function OnlineGame({ config, onExit }) {
       )}
       {showGameScreen ? (
         <main>
-          <div
-            id="playerOneElement"
-            className={`playerElement leftPlayer ${playersEntering ? "outLeft" : ""} ${state?.currentPlayer?.character === state.rotation[0][1] ? "activePlayer" : ""}`}
-          >
             <div
-              className={`playerElement-character ${state?.currentPlayer?.character === state.rotation[0][1] ? "activePlayer-character" : ""}`}
+                id="playerOneElement"
+                className={`playerElement leftPlayer ${playersEntering ? "outLeft" : ""} ${state?.currentPlayer?.character === state.rotation[0][1] ? "activePlayer" : ""}`}
             >
-              {state.rotation[0][1]}
+                <div className="player-avatar-wrapper">
+                    {state.rotation[0][2] ? (
+                        <img
+                            src={`data:image/jpeg;base64,${state.rotation[0][2]}`}
+                            alt="P1"
+                            className="player-img"
+                        />
+                    ) : (
+                        <div className="player-placeholder">{state.rotation[0][0]?.charAt(0).toUpperCase()}</div>
+                    )}
+                    <div className="char-badge">{state.rotation[0][1]}</div>
+                </div>
             </div>
-            <div>{state.rotation[0][0]}</div>
-          </div>
-          <div
-            id="playerTwoElement"
-            className={`playerElement rightPlayer ${playersEntering ? "outRight" : ""} ${state?.currentPlayer?.character === state.rotation[1][1] ? "activePlayer" : ""}`}
-          >
+
             <div
-              className={`playerElement-character ${state?.currentPlayer?.character === state.rotation[1][1] ? "activePlayer-character" : ""}`}
+                id="playerTwoElement"
+                className={`playerElement rightPlayer ${playersEntering ? "outRight" : ""} ${state?.currentPlayer?.character === state.rotation[1][1] ? "activePlayer" : ""}`}
             >
-              {state.rotation[1][1]}
+                <div className="player-avatar-wrapper">
+                    {state.rotation[1][2] ? (
+                        <img
+                            src={`data:image/jpeg;base64,${state.rotation[1][2]}`}
+                            alt="P2"
+                            className="player-img"
+                        />
+                    ) : (
+                        <div className="player-placeholder">{state.rotation[1][0]?.charAt(0).toUpperCase()}</div>
+                    )}
+                    <div className="char-badge">{state.rotation[1][1]}</div>
+                </div>
             </div>
-            <div>{state.rotation[1][0]}</div>
-          </div>
           {state.rotation.length === 3 && (
-            <div
-              id="playerThreeElement"
-              className={`playerElement rightPlayer ${playersEntering ? "outAbove" : ""} ${state?.currentPlayer?.character === state.rotation[2][1] ? "activePlayer" : ""}`}
-              style={{ top: "12%" }}
-            >
               <div
-                className={`playerElement-character ${state?.currentPlayer?.character === state.rotation[1][1] ? "activePlayer-character" : ""}`}
+                  id="playerThreeElement"
+                  className={`playerElement rightPlayer ${playersEntering ? "outAbove" : ""} ${state?.currentPlayer?.character === state.rotation[2][1] ? "activePlayer" : ""}`}
+                  style={{ top: "12%" }}
               >
-                {state.rotation[2][1]}
+                  <div className="player-avatar-wrapper">
+                      {state.rotation[2][2] ? (
+                          <img
+                              src={`data:image/jpeg;base64,${state.rotation[2][2]}`}
+                              alt="P3"
+                              className="player-img"
+                          />
+                      ) : (
+                          <div className="player-placeholder">{state.rotation[2][0]?.charAt(0).toUpperCase()}</div>
+                      )}
+                      <div className="char-badge">{state.rotation[2][1]}</div>
+                  </div>
               </div>
-              <div>{state.rotation[2][0]}</div>
-            </div>
           )}
 
           {!resolvedWinner && !resolvedDraw && (
@@ -338,10 +357,14 @@ export default function OnlineGame({ config, onExit }) {
       )}
       {!loading && (
         <button className="back-button-modern" onClick={onExit}>
-          <span className="arrow-icon">←</span>
+            <img
+                src="/back-arrow.png"
+                alt="Back"
+                style={{ width: '30px', height: '30px' }}
+            />
         </button>
       )}
-      <div className="game-title">{`"${config.gameName}"`}</div>
+      <div className="game-title">{`${config.gameName}`}</div>
       {state?.winner && (
         <div className="winner">
           <div className="winner-name">

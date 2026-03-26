@@ -33,7 +33,7 @@
 .user-avatar-large {
     width: 120px;
     height: 120px;
-    background: var(--primary);
+    background: linear-gradient(145deg, #0e2b3e, #3d8dba);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -79,7 +79,7 @@
 }
 
 .stat-box.highlight {
-    border-color: var(--primary);
+    background: linear-gradient(145deg, #0e2b3e, #3d8dba);
     background: rgba(188, 19, 254, 0.05);
 }
 
@@ -124,7 +124,7 @@
 
 .winrate-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--primary), #a333ff);
+    background: linear-gradient(145deg, #0e2b3e, #3d8dba);
     box-shadow: 0 0 15px var(--primary);
     transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
