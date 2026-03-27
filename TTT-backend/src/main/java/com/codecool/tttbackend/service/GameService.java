@@ -367,7 +367,7 @@ public class GameService {
           player.getCharacter(),
           player.getNumberOfWins(),
           0,
-          null
+              player.getUser().getProfileImage()
       );
    }
 

@@ -240,7 +240,11 @@ export default function GameMenu({onStart}) {
 
             {menuStep !== "startMenu" && menuStep !== "leaving" && menuStep !== "profile" &&(
                 <button className="back-button-modern" onClick={back}>
-                    <span className="arrow-icon">←</span>
+                    <img
+                        src="/back-arrow.png"
+                        alt="Back"
+                        style={{ width: '30px', height: '30px' }}
+                    />
                 </button>
             )}
 
