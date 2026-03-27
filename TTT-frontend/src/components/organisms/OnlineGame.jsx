@@ -298,6 +298,7 @@ export default function OnlineGame({ config, onExit }) {
               </h2>
             )}
           {!loading &&
+            !state.started &&
             userName == config.creator &&
             state?.rotation?.length == 1 && (
               <h2 className={`helptext waiting`}>

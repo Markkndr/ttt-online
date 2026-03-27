@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAudio } from '../../../hooks/useAudio';
+import { useAudio } from '../../hooks/useAudio';
 
 const CHARSET = ['◯','✖','△'];
 

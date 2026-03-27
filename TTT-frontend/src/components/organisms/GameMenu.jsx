@@ -1,14 +1,13 @@
 import { useState } from "react";
-import { useAudio } from "../hooks/useAudio";
-import "../StyleCSS/menu.css";
-import "../StyleCSS/global.css";
-import CreateGame from "./game/steps/CreateGame.jsx";
-import ServerBrowser from "./game/steps/ServerBrowser";
-import OnlineLoadList from "./game/steps/OnlineLoadList";
-import { joinOnlineGame, startOnlineGame } from "../service/gameService.js";
-import Profile from "./game/steps/Profile";
-import profile from "./game/steps/Profile";
-import { useAuth } from "../state/AuthContext";
+import { useAudio } from "../../hooks/useAudio.js";
+import "../../StyleCSS/menu.css";
+import "../../StyleCSS/global.css";
+import CreateGame from "./CreateGame.jsx";
+import ServerBrowser from "./ServerBrowser.jsx";
+import OnlineLoadList from "./OnlineLoadList.jsx";
+import { joinOnlineGame, startOnlineGame } from "../../service/gameService.js";
+import Profile from "./Profile.jsx";
+import { useAuth } from "../../state/AuthContext";
 
 const CHARSET = ["◯", "✖", "△"];
 

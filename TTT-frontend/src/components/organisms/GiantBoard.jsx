@@ -1,4 +1,4 @@
-import BigBoard from "./BigBoard";
+import BigBoard from "../molecules/BigBoard";
 
 export default function GiantBoard({
   smallBoards,

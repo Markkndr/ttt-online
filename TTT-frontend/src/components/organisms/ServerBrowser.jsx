@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { getAvailableGames } from "../../../service/gameService";
-import { useAuth } from "../../../state/AuthContext";
+import { getAvailableGames } from "../../service/gameService";
+import { useAuth } from "../../state/AuthContext";
 
 export default function ServerBrowser({ onJoin }) {
   const [servers, setServers] = useState([]);
@@ -42,7 +42,7 @@ export default function ServerBrowser({ onJoin }) {
               <div className="load-info">
                 <div className="game-name">{server.gameName}</div>
                 <div className="game-meta">
-                  Players: {server.currentPlayers} / {server.maxPlayers} |{" "}
+                  Players: {server.currentPlayers} / {server.maxPlayers} | {" "}
                   Created by: {server.creator || "Unknown"}
                 </div>
               </div>

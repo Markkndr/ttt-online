@@ -1,10 +1,10 @@
 import {useState} from "react";
-import {useAudio} from "../hooks/useAudio";
-import {api} from "../state/config";
-import '../StyleCSS/auth.css'
-import { useAuth } from "../state/AuthContext";
-import { useUser } from "../state/UserContext";
-import { useWebSocket } from "../state/WebSocketContext";
+import {useAudio} from "../../hooks/useAudio";
+import {api} from "../../state/config";
+import '../../StyleCSS/auth.css'
+import { useAuth } from "../../state/AuthContext";
+import { useUser } from "../../state/UserContext";
+import { useWebSocket } from "../../state/WebSocketContext";
 
 export default function Register({className = "", style, onBack, onSubmit}) {
     const {play} = useAudio();

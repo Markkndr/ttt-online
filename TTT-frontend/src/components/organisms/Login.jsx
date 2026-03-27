@@ -1,11 +1,11 @@
 import {useState} from "react";
-import {api} from "../state/config";
-import {useNotifications} from "../state/NotificationContext";
-import {useWebSocket} from "../state/WebSocketContext";
-import '../StyleCSS/auth.css'
-import '../StyleCSS/global.css'
-import {useUser} from "../state/UserContext";
-import { useAuth } from "../state/AuthContext";
+import {api} from "../../state/config";
+import {useNotifications} from "../../state/NotificationContext";
+import {useWebSocket} from "../../state/WebSocketContext";
+import '../../StyleCSS/auth.css'
+import '../../StyleCSS/global.css'
+import {useUser} from "../../state/UserContext";
+import { useAuth } from "../../state/AuthContext";
 
 function Login({className = "", style, onSubmit, onRegister}) {
     const {connect, subscribe} = useWebSocket();

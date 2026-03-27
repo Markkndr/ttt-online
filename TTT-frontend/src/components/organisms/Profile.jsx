@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import "../../../StyleCSS/profile.css";
-import { useUser } from "../../../state/UserContext";
-import { useAuth } from "../../../state/AuthContext";
-import { fetchWithAuth } from "../../../state/auth";
+import "../../StyleCSS/profile.css";
+import { useUser } from "../../state/UserContext";
+import { useAuth } from "../../state/AuthContext";
+import { fetchWithAuth } from "../../state/auth";
 
 const Profile = ({ onBack }) => {
     const [userData, setUserData] = useState({

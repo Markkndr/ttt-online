@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { getMyGames, startOnlineGame } from "../../../service/gameService";
-import { useAuth } from "../../../state/AuthContext";
+import { getMyGames } from "../../service/gameService";
+import { useAuth } from "../../state/AuthContext";
 
 export default function OnlineLoadList({ onSelect, onStartGame }) {
   const [savedGames, setSavedGames] = useState([]);
@@ -44,7 +44,7 @@ export default function OnlineLoadList({ onSelect, onStartGame }) {
                     <div className="load-info">
                       <div className="game-name">{game.gameName}</div>
                       <div className="game-meta">
-                        State: {game.state} | Created by:{" "}
+                        State: {game.state} | Created by: {" "}
                         {game.creator ? game.creator : "Unknown"}
                       </div>
                     </div>

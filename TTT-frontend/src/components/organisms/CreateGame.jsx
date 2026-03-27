@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { createOnlineGame } from "../../../service/gameService";
-import { useAuth } from "../../../state/AuthContext";
+import { createOnlineGame } from "../../service/gameService";
+import { useAuth } from "../../state/AuthContext";
 
 const CHARSET = ["◯", "✖", "△"];
 

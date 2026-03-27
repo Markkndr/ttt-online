@@ -74,6 +74,7 @@ export async function fetchWithAuth(path, { method = "GET", headers = {}, body, 
   if (resp.status === 401 || resp.status === 403) {
     const newToken = await refreshAccessToken();
     if (!newToken) {
+      setAccessToken(null);
       return resp;
     }
 
@@ -91,5 +92,21 @@ export async function fetchWithAuth(path, { method = "GET", headers = {}, body, 
     });
   }
 
+  return resp;
+}
+
+export async function logout({ token, headers = {}, ...rest } = {}) {
+  const effectiveToken = token || getAccessToken();
+  const authHeaders = effectiveToken
+    ? { ...headers, Authorization: `Bearer ${effectiveToken}` }
+    : { ...headers };
+
+  const resp = await fetchWithAuth("/api/user/logout", {
+    method: "POST",
+    headers: authHeaders,
+    ...rest,
+  });
+
+  setAccessToken(null);
   return resp;
 }
