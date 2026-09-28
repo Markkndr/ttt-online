@@ -207,6 +207,7 @@ export default function Game({config, onExit}) {
                 {(resolvedWinner || resolvedDraw) && (
                     <div
                         className={resolvedWinner ? "wonBigBoard" : "drawBigBoard"}
+                        data-mark={resolvedWinner || undefined}
                         onClick={(e) => {
                             e.currentTarget.classList.add("fade-out");
                             setTimeout(() => {
