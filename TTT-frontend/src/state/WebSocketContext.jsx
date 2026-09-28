@@ -25,7 +25,7 @@ export function WebSocketProvider({ children }) {
     const connect = useCallback((tokenOverride = null) => {
         const token = tokenOverride || accessToken;
 
-        console.log("WS token at connect =", token);
+        // console.log("WS token at connect =", token); // avoid logging auth token
 
         if (!token) {
             console.warn("Skipping WS connect because token is missing");
