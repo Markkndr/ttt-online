@@ -4,7 +4,7 @@
 
 ### Real-time multiplayer **Ultimate Tic-Tac-Toe**
 
-Play the strategic 9-boards-in-a-board variant against your friends over the web, with live moves, accounts, and rematches.
+Play the strategic 9-boards-in-a-board variant against your friends over the web — or solo against a built-in AI — with live moves, accounts, and rematches.
 
 <br>
 
@@ -37,11 +37,15 @@ Play the strategic 9-boards-in-a-board variant against your friends over the web
 
 The backend keeps every game's state in sync in real time over WebSockets, handles user accounts with JWT authentication, and persists everything to PostgreSQL so games and stats survive a refresh.
 
+Prefer to play alone? A **single-player mode** pits you against a computer opponent with four difficulty levels. The AI runs entirely in the browser — no server or account needed — so you can practice the ruleset any time.
+
 ---
 
 ## ✨ Features
 
 - 🎮 **Real-time multiplayer** — moves stream instantly to both players over STOMP/WebSocket
+- 🤖 **Single-player vs AI** — play offline against a computer opponent with four difficulty levels (Easy, Medium, Hard, Unbeatable), powered by a client-side alpha-beta search
+- 👥 **Local hotseat** — pass-and-play two- or three-player games on one device
 - 🧩 **Full Ultimate Tic-Tac-Toe rules** — active-board tracking, small-board wins, overall winner detection
 - 🔐 **Secure accounts** — register, log in, JWT access tokens with refresh-token rotation and logout
 - 🏠 **Lobby system** — create games, browse available/active/joined games, join, start, and leave
@@ -199,6 +203,8 @@ ttt-online/
 │   └── Dockerfile
 └── TTT-frontend/                 # React + Vite client
     └── src/
+        ├── components/game/       # Board, cells, online & local game screens
+        └── state/                 # Game rules (gameLogic.js) & AI engine (aiEngine.js)
 ```
 
 ---
