@@ -12,7 +12,7 @@ export default function BigBoard({
   pendingMove,
 }) {
   if (bigStatus && bigStatus !== "D") {
-    return <td className="BB wonBoard">{bigStatus}</td>;
+    return <td className="BB wonBoard" data-mark={bigStatus}>{bigStatus}</td>;
   }
   if (bigStatus === "D") {
     return <td className="BB drawBoard"></td>;

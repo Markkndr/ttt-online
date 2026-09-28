@@ -1,21 +1,23 @@
+/* ================= GIANT BOARD ================= */
 
 .GB {
     display: grid;
     grid-template-columns: repeat(3, auto);
     gap: 10px;
     margin: auto;
-    border-collapse: collapse;
     width: fit-content;
     height: fit-content;
-    border-radius: 15px;
+    border-radius: 16px;
+    padding: 10px;
     overflow: hidden;
     transition: transform 0.6s ease-in-out;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: linear-gradient(145deg, #0e2b3e, #3d8dba);
-
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
 }
 
 @media (max-width: 850px) {
@@ -56,11 +58,12 @@
     .wonBigBoard, .drawBigBoard {
         width: 280px !important;
         height: 280px !important;
-        font-size: 250px !important;
+        font-size: 200px !important;
         margin-top: 0 !important;
-
     }
 }
+
+/* ================= BIG BOARD (a 3x3 sub-grid) ================= */
 
 .BB {
     display: grid;
@@ -69,128 +72,149 @@
     gap: 4px;
     width: 150px;
     height: 150px;
-    border-width: 3px;
-    border-radius: 15px;
-    border-color: rgba(122, 44, 44, 0);
-    border-style: dashed;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(145deg, #0e2b3e, #3d8dba);
-    transition: all 400ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    padding: 2px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: rgba(148, 163, 184, 0.04);
+    transition: var(--transition);
+    padding: 4px;
     overflow: hidden;
     position: relative;
 }
 
 .BB:hover {
-    border-width: 2px;
-    border-color: rgb(77, 17, 133);
-    background-color: rgb(54, 3, 36);
-    border-radius: 10px;
-    scale: 1.05;
+    border-color: rgba(99, 102, 241, 0.4);
 }
 
 .MB td {
     padding: 0;
 }
 
+/* ================= SMALL CELL ================= */
+
 .SB {
     width: 100%;
     height: 100%;
-    color: aquamarine;
+    color: var(--text);
     text-align: center;
-    align-items: center;
-    justify-items: center;
     box-sizing: border-box;
-    vertical-align: middle;
     border-radius: 8px;
-    transition: all 0.3s ease;
+    transition: var(--transition);
     display: flex;
-    font-size: 1.2rem;
+    align-items: center;
     justify-content: center;
+    font-size: 1.4rem;
+    font-weight: 700;
 }
 
-.SB:hover {
-    border-width: 2px;
-    border-color: rgb(77, 17, 133);
-    background-color: rgb(54, 3, 36);
-    border-radius: 40%;
+/* per-mark colours: ◯ ✖ △ */
+.SB[data-mark="◯"] { color: var(--mark-circle); }
+.SB[data-mark="✖"] { color: var(--mark-cross); }
+.SB[data-mark="△"] { color: var(--mark-tri); }
+
+.clickableCell {
+    cursor: pointer;
 }
 
-.activeBoard {
-    border-width: 2px;
-    background: linear-gradient(145deg, #e0c3fc, #8ec5fc);
-    border-radius: 10px;
-    scale: 1;
+.clickableCell:hover {
+    background: rgba(99, 102, 241, 0.15);
 }
 
-.activeBoard:hover {
-    border-color: rgb(101, 22, 175);
-    background: linear-gradient(145deg, #e0c3fc, #8ec5fc);
+.pendingCell {
+    background: rgba(99, 102, 241, 0.2);
+    color: var(--primary-soft);
+    animation: pulse 1.2s infinite ease-in-out;
 }
 
 .activeCell {
-    background: linear-gradient(145deg, #000000, #082032);
-    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.02);
 }
 
-.activeCell:hover {
-    background-color: rgb(181, 12, 31);
+/* the board you must play in */
+.activeBoard {
+    border-color: var(--primary);
+    background: rgba(99, 102, 241, 0.12);
+    box-shadow: 0 0 16px rgba(99, 102, 241, 0.35);
 }
+
+/* an active board owned by the opponent (not yours to play) */
+.activeBoard-other {
+    border-color: rgba(148, 163, 184, 0.35);
+    background: rgba(148, 163, 184, 0.06);
+}
+
+/* ================= WON / DRAW SUB-BOARDS ================= */
 
 .wonBoard {
-    justify-content: center;
-    text-align: center;
-    align-items: center;
-    color: aquamarine;
-    font-size: 130px;
     display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 120px;
+    font-weight: 700;
+    color: var(--text);
+    background: rgba(148, 163, 184, 0.05);
     pointer-events: none;
 }
+
+.wonBoard[data-mark="◯"] { color: var(--mark-circle); }
+.wonBoard[data-mark="✖"] { color: var(--mark-cross); }
+.wonBoard[data-mark="△"] { color: var(--mark-tri); }
+
 @media (max-width: 850px) {
-    .wonBoard{
-        font-size: 80px;
+    .wonBoard {
+        font-size: 70px;
     }
 }
 
 .drawBoard {
+    display: flex;
     justify-content: center;
-    text-align: center;
     align-items: center;
-    scale: 0.9;
-    border-color: rgb(41, 8, 71);
-    border-radius: 20px;
-    background-color: rgb(33, 1, 22);
+    text-align: center;
+    color: var(--text-muted);
+    background: rgba(148, 163, 184, 0.03);
+    border-radius: 12px;
 }
 
-.drawBoard:hover {
-    scale: 1;
-    background-color: rgb(56, 2, 37);
-}
-
+/* ================= END-GAME OVERLAY ================= */
 
 .wonBigBoard {
     display: flex;
     justify-content: center;
     text-align: center;
     align-items: center;
-    color: aquamarine;
     width: 350px;
     height: 350px;
-    background: linear-gradient(145deg, #bf9b30, #f7ef8a, #bf9b30, #aa7f1d);
-    font-size: 320px;
-    transition: 0.5s ease-in-out;
-    border-radius: 10%;
+    font-size: 300px;
+    font-weight: 800;
+    color: var(--primary-soft);
+    background: var(--bg-elevated);
+    border: 2px solid var(--primary);
+    border-radius: 24px;
+    box-shadow: 0 0 40px rgba(99, 102, 241, 0.4);
+    transition: 0.4s ease-in-out;
     margin-top: 40vh;
-    padding-bottom: 40px;
+    cursor: pointer;
+}
+
+.wonBigBoard[data-mark="◯"] {
+    color: var(--mark-circle);
+    border-color: var(--mark-circle);
+    box-shadow: 0 0 40px rgba(129, 140, 248, 0.4);
+}
+.wonBigBoard[data-mark="✖"] {
+    color: var(--mark-cross);
+    border-color: var(--mark-cross);
+    box-shadow: 0 0 40px rgba(245, 158, 11, 0.4);
+}
+.wonBigBoard[data-mark="△"] {
+    color: var(--mark-tri);
+    border-color: var(--mark-tri);
+    box-shadow: 0 0 40px rgba(52, 211, 153, 0.4);
 }
 
 .wonBigBoard:hover {
-    background-color: rgb(52, 2, 34);
-    scale: 1.1;
-    color: rgb(10, 241, 68);
-    cursor: pointer;
-    border-radius: 50%;
+    transform: scale(1.05);
 }
 
 .drawBigBoard {
@@ -198,20 +222,22 @@
     justify-content: center;
     text-align: center;
     align-items: center;
-    color: rgb(235, 75, 12);
-    font-size: 100px;
-    width: 450px;
-    height: 450px;
-    background-color: rgb(33, 1, 22);
-    transition: 0.5s ease-in-out;
+    width: 350px;
+    height: 350px;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    background: var(--bg-elevated);
+    border: 2px solid var(--border);
+    border-radius: 24px;
+    transition: 0.4s ease-in-out;
+    cursor: pointer;
+    margin-top: 40vh;
 }
 
 .drawBigBoard:hover {
-    background-color: rgb(52, 2, 34);
-    scale: 1.1;
-    color: rgb(37, 7, 167);
-    cursor: pointer;
-    border-radius: 50%;
+    transform: scale(1.05);
+    border-color: var(--text-muted);
 }
 
 .fade-out {
@@ -219,31 +245,33 @@
     scale: 0.5;
 }
 
+/* ================= PLAYERS ================= */
 
 .playerElement {
     display: flex;
     flex-direction: column;
-    color: aquamarine;
+    color: var(--text);
     position: fixed;
     top: 4%;
-    transition: ease-in-out, 600ms;
+    transition: all 600ms ease-in-out;
     border-radius: 50%;
     width: 70px;
     height: 70px;
     align-items: center;
     justify-content: center;
     text-align: center;
-
     overflow: hidden;
-    background-color: #1a1a1a;
-    border: 2px solid rgba(127, 255, 212, 0.3);
+    background: var(--bg-elevated);
+    border: 2px solid var(--border);
 }
+
 .playerElement img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
 }
+
 .playerElement span {
     font-size: 1.5rem;
     font-weight: bold;
@@ -252,21 +280,19 @@
 
 .activePlayer {
     scale: 1.4;
-    background-color: rgb(33, 1, 22);
-    border-color: blueviolet;
-    border-style: dotted;
-    border-width: 5px;
+    border-color: var(--primary);
+    box-shadow: 0 0 16px rgba(99, 102, 241, 0.4);
 }
 
 .leftPlayer { left: 30%; }
 .rightPlayer { right: 30%; }
-
 
 .outAbove { top: -200%; }
 .outRight { right: -100%; }
 .outLeft { left: -100%; }
 .outBelow { bottom: -100%; }
 
+/* ================= QUIT BUTTON ================= */
 
 .game-exit-button {
     all: unset;
@@ -274,14 +300,14 @@
     cursor: pointer;
     padding: 10px 25px;
     bottom: 50px;
-    background-color: rgb(43, 8, 8);
-    border: 2px solid rgb(134, 15, 15);
-    color: white;
+    background: transparent;
+    border: 1px solid var(--danger);
+    color: var(--danger);
     border-radius: 50px;
-    font-weight: bold;
+    font-weight: 600;
+    letter-spacing: 0.5px;
     text-align: center;
-    transition: all 0.2s ease;
-    box-shadow: 0 0 10px rgba(134, 15, 15, 0.4);
+    transition: var(--transition);
     right: 40%;
     left: 40%;
 }
@@ -294,25 +320,20 @@
 }
 
 .game-exit-button:hover {
-    background-color: rgb(134, 15, 15);
-    box-shadow: 0 0 20px rgba(134, 15, 15, 0.7);
-    transform: scale(1.05);
+    background: var(--danger);
+    color: white;
 }
 
-.winner{
+/* ================= WINNER / TITLE TEXT ================= */
+
+.winner {
     position: absolute;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 2.5rem;
-    font-weight: bold;
+    font-weight: 700;
     top: 30vh;
     text-align: center;
-
-    background: linear-gradient(145deg, #bf9b30, #f7ef8a, #bf9b30);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-
-    filter: drop-shadow(0 0 10px rgba(191, 155, 48, 0.4));
-
+    color: var(--primary-soft);
     animation: fadeInDown 0.8s ease-out;
 }
 
@@ -326,16 +347,15 @@
         transform: translateY(0);
     }
 }
-.game-title{
+
+.game-title {
     position: absolute;
     top: 15vh;
-    background-color: rgb(26, 138, 138);
-    border: 2px solid rgb(0, 0, 0);
-    color: #000000;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    color: var(--text);
     border-radius: 10px;
-    font-weight: bold;
+    font-weight: 600;
     text-align: center;
-    box-shadow: 0 0 10px rgba(134, 15, 15, 0.4);
-    padding: 5px;
-
+    padding: 8px 16px;
 }

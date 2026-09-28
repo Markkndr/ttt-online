@@ -19,7 +19,7 @@
     padding: 2.5rem;
     border-radius: var(--radius);
     backdrop-filter: blur(12px);
-    border: 1px solid rgba(188, 19, 254, 0.2);
+    border: 1px solid rgba(99, 102, 241, 0.2);
     width: 100%;
     max-width: 400px;
     display: flex;
