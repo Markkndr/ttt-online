@@ -128,7 +128,7 @@ export default function Game({config, onExit}) {
     const maybeAiTurn = async () => {
         if (!config || !state) return;
         if (config.mode !== "pve") return;
-        const ai = config.rotation[1];
+        const ai = config.chars[1]; // the computer's character (human picks chars[0])
         const next = currentPlayer;
         if (next !== ai) return;
 
@@ -140,7 +140,7 @@ export default function Game({config, onExit}) {
                 bigBoard: state.bigBoard,
                 activeBigs: state.activeBigs,
                 aiChar: ai,
-                oppChar: config.rotation[0],
+                oppChar: config.chars[0],
             },
             config.difficulty || "easy",
         );
@@ -193,6 +193,7 @@ export default function Game({config, onExit}) {
                         smallBoards={state.smallBoards}
                         bigBoard={state.bigBoard}
                         activeBigs={state.activeBigs}
+                        canPlay={config.mode !== "pve" || currentPlayer === config.chars[0]}
                         onPlay={handlePlay}
                         onHover={onHover}
                         entering={boardEntering}
