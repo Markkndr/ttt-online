@@ -9,6 +9,7 @@ import {
   nextActiveFromCell,
   anyPlayableBigs
 } from "../../state/gameLogic";
+import { chooseMove } from "../../state/aiEngine";
 import "../../StyleCSS/styles.css";
 
 export default function Game({config, onExit}) {
@@ -133,18 +134,18 @@ export default function Game({config, onExit}) {
 
         await new Promise((r) => setTimeout(r, 300));
 
-        const playable = [];
-        state.activeBigs.forEach((key) => {
-            const [br, bc] = key.split(",").map(Number);
-            const board = state.smallBoards[br][bc];
-            for (let sr = 0; sr < 3; sr++)
-                for (let sc = 0; sc < 3; sc++) {
-                    if (!board[sr][sc]) playable.push([br, bc, sr, sc]);
-                }
-        });
-        if (!playable.length) return;
-        const choice = playable[Math.floor(Math.random() * playable.length)];
-        handlePlay(...choice);
+        const move = chooseMove(
+            {
+                smallBoards: state.smallBoards,
+                bigBoard: state.bigBoard,
+                activeBigs: state.activeBigs,
+                aiChar: ai,
+                oppChar: config.rotation[0],
+            },
+            config.difficulty || "easy",
+        );
+        if (!move) return;
+        handlePlay(...move);
         play("computer");
     };
 
